@@ -1,117 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location_platform_interface/location_platform_interface.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_pp/bloc/weather_bloc.dart';
 import 'package:weather_pp/model.dart';
 import 'package:weather_pp/service/api_client/api_client.dart';
 import 'package:weather_pp/service/location_checked.dart';
+import 'package:weather_pp/service/weather_repository.dart';
+import 'package:weather_pp/ui/action_buttons.dart';
 import 'package:weather_pp/ui/current_date_ui.dart';
 import 'package:weather_pp/ui/daily_weather_forecast.dart';
 import 'package:weather_pp/ui/hourly_weather_forecast.dart';
-// import 'package:weather/weather.dart';
-// import 'package:weather_pp/ui/current_weather_widget.dart';
+import 'package:weather_pp/ui/weather_ui.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage2 extends StatelessWidget {
+  final weatherRepository = WeathersRepository();
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-  // @override
-  // void initState() {
-  //   initState();
-  // }
-
-class _HomePageState extends State<HomePage> {
+  HomePage2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<Model>();
-    // var current = context.watch<Model>().current;
-    var forecast;
-    var currentPosition;
-    // var firstTime=true;
-    if (model.firstTime) model.firstTimeCall();
-    // if (current == null) {model.DefaultWeatherWidget();};
-    return SafeArea(
+    return BlocProvider <WeatherBloc>(
+      create: (context) => WeatherBloc(weatherRepository),
       child: Scaffold(
-        // appBar: AppBar(title: const Text("Location"),),
-        backgroundColor: Colors.amber[50],
-        floatingActionButton: Builder(builder: (BuildContext context) {
-          return FloatingActionButton(
-            child: const Icon(Icons.refresh),
-            tooltip: "Refresh",
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.blue,
-            heroTag: null,
-            elevation: 7.0,
-            highlightElevation: 14.0,
-            onPressed: () async {
-              currentPosition = await LocationChecked().getLocation(); //first request for location
-              forecast = await fetchWeather();
-              print('123');
-              model.buttonPressed(currentPosition, forecast);
-            },
-            mini: false,
-            shape: const CircleBorder(),
-            isExtended: false,
-          );
-        }),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-
-        body: Container(
-          // constraints: BoxConstraints.tightFor(width: double.infinity, height: double.infinity),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: <Color>[Color(0xFF2196F3), Color(0xFFf9e3ce)],
-            ),
-          ),
-          child: ListView(
-            children: const [
-              CurrentDateUiWidget(),
-              SizedBox(
-                child: hourlyWeatherForecast(),
-                height: 100,
-                // width: 400,
-              ),
-              SizedBox(
-                child: dailyWeatherForecast(),
-                height: 600,
-                // width: 400,
-              ),
-            ],
-          ),
+        backgroundColor: Colors.blue,
+        appBar: AppBar(
+          title: Text('Weather'),
+          centerTitle: true,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // ActionButtons(),
+            Expanded(child: WeatherUI()),
+            ActionButtons(),
+          ],
         ),
       ),
     );
   }
-}
-
-Future  fetchWeather() async {
-  const String _apiKey = '497d04b78cfab23e1679b18e620dd709';
-  LocationData location;
-  double la;
-
-  try {
-    location = await LocationChecked().getLocation();
-    print('location: $location');
-    la = location.latitude!;
-    print('location.latitude: $la');
-    }
-    catch (error) {
-      return print('$error ${StackTrace.current}');
-    }
-    try {
-      var apiClient = ApiClient(_apiKey);
-      Map<String, dynamic> onecallWeather = await apiClient.onecallWeatherByLocation(
-      location.latitude!,
-      location.longitude!,
-    ).timeout(const Duration(seconds: 10));
-      print('map json ${onecallWeather.toString}');
-      return onecallWeather;
-    } catch (error) {
-        print('$error ${StackTrace.current}');
-        return Future.error(error, StackTrace.current);
-    }
 }

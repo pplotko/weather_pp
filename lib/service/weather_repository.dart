@@ -1,7 +1,8 @@
-import 'package:cubit_network_example/models/user.dart';
-import 'package:cubit_network_example/services/user_api_provider.dart';
+import 'package:weather_pp/service/weather_api_provider.dart';
 
-class UsersRepository {
-  UserProvider _usersProvider = UserProvider();
-  Future<List<User>> getAllUsers() => _usersProvider.getUser();
+class WeathersRepository {
+  final WeatherProvider _weathersProvider = WeatherProvider();
+  Future getAllWeathers() => _weathersProvider.fetchWeather();
+  Future <String> getPlace() => _weathersProvider.fetchPlace();
+  // Future<List<User>> getAllUsers() => _usersProvider.getUser();
 }

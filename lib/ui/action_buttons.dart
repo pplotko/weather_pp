@@ -1,38 +1,49 @@
-import 'package:cubit_network_example/bloc/user_bloc.dart';
-import 'package:cubit_network_example/bloc/user_event.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_pp/bloc/weather_bloc.dart';
+import 'package:weather_pp/bloc/weather_event.dart';
 
 class ActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final UserBloc userBloc = context.read<UserBloc>();
+    final WeatherBloc weatherBloc = context.read<WeatherBloc>();
     // final UserCubit userCubit = context.read<UserCubit>();
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        ElevatedButton(
-          child: Text('Load'),
-          onPressed: () {
-            userBloc.add(UserLoadEvent());
-            // userCubit.fetchUsers();
-          },
-          style: ElevatedButton.styleFrom(
-            primary: Colors.green,
-          ),
+    return Container(
+      padding: EdgeInsets.all(8),
+      height: 60,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: <Color>[Color(0xFF2196F3), Color(0xFFf9e3ce)],
         ),
-        SizedBox(width: 8.0),
-        ElevatedButton(
-          child: Text('Clear'),
-          onPressed: () {
-            userBloc.add(UserClearEvent());
-            // userCubit.clearUsers();
-          },
-          style: ElevatedButton.styleFrom(
-            primary: Colors.red,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ElevatedButton(
+            child: Text('Load'),
+            onPressed: () {
+              weatherBloc.add(WeatherLoadEvent());
+              // userCubit.fetchUsers();
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+            ),
           ),
-        ),
-      ],
+          SizedBox(width: 8.0),
+          ElevatedButton(
+            child: Text('Clear'),
+            onPressed: () {
+              weatherBloc.add(WeatherClearEvent());
+              // userCubit.clearUsers();
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.red,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

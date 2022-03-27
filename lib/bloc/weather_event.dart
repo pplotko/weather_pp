@@ -1,5 +1,5 @@
-abstract class UserEvent {}
+abstract class WeatherEvent {}
 
-class UserLoadEvent extends UserEvent {}
+class WeatherLoadEvent extends WeatherEvent {}
 
-class UserClearEvent extends UserEvent {}
+class WeatherClearEvent extends WeatherEvent {}

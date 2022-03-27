@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_pp/home_page.dart';
 import 'package:weather_pp/model.dart';
+import 'package:weather_pp/ui/home_page2.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home: const HomePage(),
+            home: HomePage2(),
         ),
       );
 }

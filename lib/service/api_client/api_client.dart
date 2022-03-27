@@ -6,20 +6,25 @@ import 'package:weather_pp/service/current_weather/current_weather.dart';
 
 class ApiClient {
   // final _httpClient = HttpClient();
-  static const _apiKey="497d04b78cfab23e1679b18e620dd709";
+  // static const _apiKey="497d04b78cfab23e1679b18e620dd709";
+  String _apiKey;
   // late Language language;
   static const String FIVE_DAY_FORECAST = 'forecast';
   static const String CURRENT_WEATHER = 'weather';
   static const String ONE_CALL_WEATHER = 'onecall';
   static const int STATUS_OK = 200;
 
-  ApiClient(_apiKey,) {
-    var _httpClient = http.Client();
+  ApiClient(this._apiKey,) {
+    // var _httpClient = http.Client();
   }
-  // apiClient(param0, param1);
+
+  Future <Map<String, dynamic>> onecallWeatherByLocation(double latitude, double longitude) async {
+    Map<String, dynamic>? jsonResponse = await _sendRequest(ONE_CALL_WEATHER, lat: latitude, lon: longitude);
+    return jsonResponse!;
+  }
 
   Future <Map<String, dynamic>> currentWeatherByLocation(double latitude, double longitude) async {
-    Map<String, dynamic>? jsonResponse = await _sendRequest(ONE_CALL_WEATHER, /*CURRENT_WEATHER,*/ lat: latitude, lon: longitude);
+    Map<String, dynamic>? jsonResponse = await _sendRequest(CURRENT_WEATHER, lat: latitude, lon: longitude);
     return jsonResponse!;
   }
 

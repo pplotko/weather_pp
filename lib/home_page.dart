@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:location_platform_interface/location_platform_interface.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_pp/model.dart';
 import 'package:weather_pp/service/api_client/api_client.dart';
@@ -10,26 +11,23 @@ import 'package:weather_pp/ui/hourly_weather_forecast.dart';
 // import 'package:weather/weather.dart';
 // import 'package:weather_pp/ui/current_weather_widget.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
-
-  @override
-  void initState() {
-    initState();
-
-  }
+  // @override
+  // void initState() {
+  //   initState();
+  // }
 
 class _HomePageState extends State<HomePage> {
-  // Model.defaultWeatherWidget();
+
   @override
   Widget build(BuildContext context) {
     final model = context.read<Model>();
-    var current = context.watch<Model>().current;
+    // var current = context.watch<Model>().current;
     var forecast;
     var currentPosition;
     // var firstTime=true;
@@ -49,7 +47,7 @@ class _HomePageState extends State<HomePage> {
             elevation: 7.0,
             highlightElevation: 14.0,
             onPressed: () async {
-              currentPosition = await LocationChecked().getLocation();
+              currentPosition = await LocationChecked().getLocation(); //first request for location
               forecast = await fetchWeather();
               print('123');
               model.buttonPressed(currentPosition, forecast);
@@ -69,9 +67,8 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           child: ListView(
-            children: [
-              const CurrentDateUiWidget(),
-              // hourlyWeatherForecast(),
+            children: const [
+              CurrentDateUiWidget(),
               SizedBox(
                 child: hourlyWeatherForecast(),
                 height: 100,
@@ -85,7 +82,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-
       ),
     );
   }
@@ -93,8 +89,8 @@ class _HomePageState extends State<HomePage> {
 
 Future  fetchWeather() async {
   const String _apiKey = '497d04b78cfab23e1679b18e620dd709';
-  var location;
-  var la;
+  LocationData location;
+  double la;
 
   try {
     location = await LocationChecked().getLocation();
@@ -107,12 +103,12 @@ Future  fetchWeather() async {
     }
     try {
       var apiClient = ApiClient(_apiKey);
-      Map<String, dynamic> fiveDayForecast = await apiClient.currentWeatherByLocation(
+      Map<String, dynamic> onecallWeather = await apiClient.onecallWeatherByLocation(
       location.latitude!,
       location.longitude!,
     ).timeout(const Duration(seconds: 10));
-      print('map json ${fiveDayForecast.toString}');
-      return fiveDayForecast;
+      print('map json ${onecallWeather.toString}');
+      return onecallWeather;
     } catch (error) {
         print('$error ${StackTrace.current}');
         return Future.error(error, StackTrace.current);

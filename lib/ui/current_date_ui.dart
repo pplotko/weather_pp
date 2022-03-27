@@ -17,7 +17,8 @@ class CurrentDateUiWidget extends StatelessWidget {
     String formatDateTime() {
       // var timeString = DateTime.now();
       //   print('Data Time Now:$timeString');
-        var timeString = DateTime.fromMillisecondsSinceEpoch(current.current.dt.toInt() * 1000, isUtc: false).toIso8601String();
+        var timeString = DateTime.fromMillisecondsSinceEpoch(
+            current.current.dt.toInt() * 1000, isUtc: false).toIso8601String();
         print('timeString: $timeString');
         print('current.dt: ${current.current.dt}');
         final formatter  = DateFormat('yyyy-MM-dd H:m:s');
@@ -31,7 +32,8 @@ class CurrentDateUiWidget extends StatelessWidget {
       padding: EdgeInsets.only(top: 50),
       child: Center(child: CircularProgressIndicator()),
     );
-    } else { final iconUrl = 'http://openweathermap.org/img/w/${current.current.weather[0].icon}.png';
+    } else { final iconUrl = 'http://openweathermap.org/img/w/'
+        '${current.current.weather[0].icon}.png';
       return Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -130,7 +132,8 @@ class CurrentDateUiWidget extends StatelessWidget {
             Row( //Time
               children: [
                 Text('${formatDateTime()}',
-                  style: const TextStyle(fontSize: 16, color: Color(0XFFFFFFFF), fontWeight: FontWeight.w400,),
+                  style: const TextStyle(fontSize: 16, color: Color(0XFFFFFFFF),
+                    fontWeight: FontWeight.w400,),
                 ),
               ],
             ),
@@ -149,13 +152,7 @@ class CurrentDateUiWidget extends StatelessWidget {
                 alignment: Alignment.bottomLeft,
                 child: Text('Сoord: lon= ${current./*coord.*/lon ?? 'нет данных'}, lat = ${current/*coord.*/.lat ?? 'нет данных'}')),
             const SizedBox(height: 4,),
-            // SizedBox(
-            //   child: hourlyWeatherForecast(),
-            //   height: 100,
-            //   width: 300,
-            // ),
           ],
-
         ),
       );
   }

@@ -1,13 +1,16 @@
 
-abstract class UserState {}
+abstract class WeatherState {}
 
-class UserEmptyState extends UserState {}
+class WeatherEmptyState extends WeatherState {}
 
-class UserLoadingState extends UserState {}
+class WeatherLoadingState extends WeatherState {}
 
-class UserLoadedState extends UserState {
-  List<dynamic> loadedUser;
-  UserLoadedState({required this.loadedUser}) : assert(loadedUser != null);
+class WeatherLoadedState extends WeatherState {
+  // List<dynamic> loadedUser;
+  var loadedWeather;
+  String loadedPlace;
+
+  WeatherLoadedState({required this.loadedWeather, required this.loadedPlace}) : assert(loadedWeather != null, loadedPlace!= null);
 }
 
-class UserErrorState extends UserState {}
+class WeatherErrorState extends WeatherState {}
